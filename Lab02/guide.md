@@ -53,7 +53,7 @@ Open a new terminal window by clicking the `+` button in the Terminal window bes
 You can port forward the service like this:
 
 ```bash
-kubectl port-forward -n argocd service/argocd-server 8080:443
+kubectl port-forward -n argocd service/argocd-server 3000:443
 ```
 
 Now go to the `Ports` tab at the bottom and right-click 
@@ -64,12 +64,12 @@ Now go to the `Ports` tab at the bottom and right-click
 
 Go to the `Ports` and click on the globe icon which will open a new browser window with access to your ArgoCD UI.
 
-![alt text](../images/change-port-protocol.png)
+![alt text](../images/open-browser.png)
 
 Use the username `admin` with this password to log in to ArgoCD.
 
 ## 5. Login to the CLI
 
 ```bash
-argocd login 127.0.0.1:8080 --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode) --grpc-web --insecure
+argocd login 127.0.0.1:3000 --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode) --grpc-web --insecure
 ```

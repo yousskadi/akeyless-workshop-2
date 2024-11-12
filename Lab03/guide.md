@@ -28,8 +28,11 @@ Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the
 Run the following commands in the `Terminal` of your GitHub codespace.
 
 ```bash
-docker run -d -p 8000:8000 -p 8200:8200 -p 18888:18888 -p 8080:8080 -p 8081:8081 -p 5696:5696 --name akeyless-gw akeyless/base
+docker run -d -e ADMIN_ACCESS_ID="p-j1ej0z1eudthim" -e DEFAULT_OIDC_ACCESS_ID="p-j1ej0z1eudthim" -e ALLOWED_ACCESS_PERMISSIONS='[{"name": "Administrators", "access_id": "p-j1ej0z1eudthim"}]' -p 8000:8000 -p 8200:8200 -p 18888:18888 -p 8080:8080 -p 8081:8081 -p 5696:5696 --name akeyless-gw akeyless/base
 ```
+
+-----------struggling here-----------
+the Akeyless UI is only giving me either to use the access keys or password.
 
 Check that the gateway is up and running
 
