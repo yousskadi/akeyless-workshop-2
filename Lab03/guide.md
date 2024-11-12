@@ -1,9 +1,7 @@
 # Akeyless Setup
 
 - [Akeyless Setup](#akeyless-setup)
-  - [1. Create an Akeyless Account](#1-create-an-akeyless-account)
-    - [1.1 Create an API Key](#11-create-an-api-key)
-    - [1.2 Associate the Auth Method with an Access Role](#12-associate-the-auth-method-with-an-access-role)
+  - [1. Access Akeyless via OIDC](#1-access-akeyless-via-oidc)
   - [2. Create a Gateway in Akeyless](#2-create-a-gateway-in-akeyless)
     - [2.1 Create the Gateway](#21-create-the-gateway)
     - [2.2 Expose the Gateway Port 8000](#22-expose-the-gateway-port-8000)
@@ -17,24 +15,11 @@
   - [6. Create an AWS Dynamic Secret](#6-create-an-aws-dynamic-secret)
 
 
-## 1. Create an Akeyless Account
+## 1. Access Akeyless via OIDC
 
-By going to https://akeyless.io and clicking on the Start Free button.
+Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the `Sign in` button, then enter the `OIDC Access ID` then click `Sign in`. This will redirect you to GitHub to login. You will need to approve the access.
 
-### 1.1 Create an API Key
-
-In the Akeyless Console, go to the `Users & Auth Methods` and click the New button. Select the `API Key` Authentication method and give it the name `AdminAPI` then click `Finish`. Make sure to save these credentials.
-
-![alt text](../images/create_api_key.png)
-
-![alt text](../images/create_api_key_auth.png)
-
-Now save the `Access ID` and `Access Key` to be used later.
-
-### 1.2 Associate the Auth Method with an Access Role
-
-Click on the `Access Role` tab and click on `admin` and then click on the `Associate` button and slelect the `/AdminAPI` Auth method. This way we are giving this Auth Method full admin capabilities.
-![alt text](../images/access_role_for_auth_method_api_key.png)
+![alt text](../images/login-oidc.png)
 
 ## 2. Create a Gateway in Akeyless
 
