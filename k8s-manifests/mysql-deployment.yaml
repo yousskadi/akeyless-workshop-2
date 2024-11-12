@@ -1,0 +1,86 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+  namespace: {{NAMESPACE}}
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS todos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        task VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-{{APP_NAME}}
+  namespace: {{NAMESPACE}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-{{APP_NAME}}
+  template:
+    metadata:
+      labels:
+        app: mysql-{{APP_NAME}}
+      annotations:
+        akeyless.io/inject-secrets: "true"
+    spec:
+      initContainers:
+        - name: init-mysql
+          image: busybox
+          command: 
+            - /bin/sh
+            - -c
+            - |
+              if [ -d /var/lib/mysql/mysql ]; then
+                echo "MySQL data directory exists, skipping initialization"
+                exit 0
+              else
+                echo "Cleaning up data directory for fresh install"
+                rm -rf /var/lib/mysql/*
+              fi
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-secret
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          value: {{DB_NAME}}
+        volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+          - name: mysql-initdb
+            mountPath: /docker-entrypoint-initdb.d
+        ports:
+          - containerPort: 3306
+            name: mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc-{{APP_NAME}}
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc-{{APP_NAME}}
+  namespace: {{NAMESPACE}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
