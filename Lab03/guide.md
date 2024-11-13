@@ -2,6 +2,8 @@
 
 - [Akeyless Setup](#akeyless-setup)
   - [1. Access Akeyless via OIDC](#1-access-akeyless-via-oidc)
+    - [1.1 Login to Akeyless UI via OIDC](#11-login-to-akeyless-ui-via-oidc)
+    - [1.2 Run a script to Login to Akeyless CLI via OIDC and create an API Key and associate it with an Access Role](#12-run-a-script-to-login-to-akeyless-cli-via-oidc-and-create-an-api-key-and-associate-it-with-an-access-role)
   - [2. Create a Gateway in Akeyless](#2-create-a-gateway-in-akeyless)
     - [2.1 Create the Gateway](#21-create-the-gateway)
     - [2.2 Expose the Gateway Port 8000](#22-expose-the-gateway-port-8000)
@@ -17,9 +19,17 @@
 
 ## 1. Access Akeyless via OIDC
 
+### 1.1 Login to Akeyless UI via OIDC
+
 Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the `Sign in` button, then enter the `OIDC Access ID` then click `Sign in`. This will redirect you to GitHub to login. You will need to approve the access.
 
 ![alt text](../images/login-oidc.png)
+
+### 1.2 Run a script to Login to Akeyless CLI via OIDC and create an API Key and associate it with an Access Role
+
+```bash
+./create_api_key.sh
+```
 
 ## 2. Create a Gateway in Akeyless
 
