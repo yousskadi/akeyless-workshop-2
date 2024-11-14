@@ -79,3 +79,5 @@ Use the username `admin` with this password to log in to ArgoCD.
 ```bash
 argocd login 127.0.0.1:3000 --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode) --grpc-web --insecure
 ```
+
+> You've reached the end of the lab.

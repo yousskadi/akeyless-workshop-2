@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# Script configuration
+APP_NAME="flask-todo"
+NAMESPACE="flask-todo"
+DB_NAME="todos"
+AKEYLESS_MYSQL_SECRET_NAME="/Workshops/mysql_root_password"
+token=$(cat token_oidc_auth.txt)
+# Get repository information from git
+REPO_URL=$(git config --get remote.origin.url)
+REPO_NAME=$(echo $REPO_URL | grep -o 'github.com[:/][^.]*' | sed 's#github.com[:/]##')
+REPO_URL="https://github.com/${REPO_NAME}.git"
+
+# Get Codespace name and construct Akeyless Gateway URL
+CODESPACE_NAME=$(gh codespace list --json name,repository -q ".[] | select(.repository==\"${REPO_NAME}\") | .name")
+if [ -z "$CODESPACE_NAME" ]; then
+    echo "Error: Could not find codespace for repository ${REPO_NAME}"
+    exit 1
+fi
+
+CODESPACE_DOMAIN="app.github.dev/"
+AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8080.${CODESPACE_DOMAIN}"
+
+# Get MySQL root password from Akeyless
+echo "Fetching MySQL root password..."
+SECRET_JSON=$(akeyless get-secret-value --name "$AKEYLESS_MYSQL_SECRET_NAME" --token "$token")
+if ! MYSQL_ROOT_PASSWORD=$(echo "$SECRET_JSON" | jq -r .password); then
+    MYSQL_ROOT_PASSWORD="$SECRET_JSON"
+fi
+
+# Create namespace
+echo "Creating namespace..."
+kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+
+# Create MySQL root password secret
+echo "Creating MySQL root password secret..."
+kubectl create secret generic mysql-root-secret \
+    --from-literal=mysql-root-password="$MYSQL_ROOT_PASSWORD" \
+    --namespace=$NAMESPACE \
+    --dry-run=client -o yaml | kubectl apply -f -
+
+# Login to ArgoCD
+echo "Logging into ArgoCD..."
+argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASS --grpc-web --insecure
+
+# Create ArgoCD application
+echo "Creating ArgoCD application..."
+argocd app create $APP_NAME \
+    --repo $REPO_URL \
+    --path . \
+    --dest-server https://kubernetes.default.svc \
+    --dest-namespace $NAMESPACE \
+    --project default \
+    --sync-policy automated \
+    --sync-option CreateNamespace=true \
+    --upsert
+
+# Wait for MySQL to be ready
+echo "Waiting for MySQL to be ready..."
+kubectl wait --for=condition=ready pod -l app=mysql-$APP_NAME -n $NAMESPACE --timeout=300s
+
+# Create Akeyless target
+echo "Creating Akeyless target..."
+akeyless target create db \
+    --name "${AKEYLESS_MYSQL_SECRET_NAME}_target" \
+    --db-type mysql \
+    --pwd "$MYSQL_ROOT_PASSWORD" \
+    --host "mysql-${APP_NAME}.${NAMESPACE}.svc.cluster.local" \
+    --port 3306 \
+    --user-name "root" \
+    --db-name "$DB_NAME" || true  # Continue if target already exists
+
+# Create Akeyless dynamic secret
+echo "Creating Akeyless dynamic secret..."
+akeyless dynamic-secret create mysql \
+    --name "${AKEYLESS_MYSQL_SECRET_NAME}_dynamic" \
+    --target-name "${AKEYLESS_MYSQL_SECRET_NAME}_target" \
+    --gateway-url $AKEYLESS_GATEWAY_URL \
+    --user-ttl "${DYNAMIC_SECRET_TTL}s" \
+    --mysql-statements "CREATE USER '{{name}}'@'%' IDENTIFIED WITH mysql_native_password BY '{{password}}' PASSWORD EXPIRE INTERVAL 30 DAY;GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '{{name}}'@'%';" \
+    --mysql-revocation-statements "REVOKE ALL PRIVILEGES, GRANT OPTION FROM '{{name}}'@'%'; DROP USER '{{name}}'@'%';" \
+    --password-length 16 || true  # Continue if dynamic secret already exists
+
+# Trigger ArgoCD sync
+echo "Triggering ArgoCD sync..."
+argocd app sync $APP_NAME
+
+echo "Deployment completed successfully!"

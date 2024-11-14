@@ -27,3 +27,5 @@ In a new terminal, run the following command to keep the codespace alive.
 ```bash
 while true; do date; sleep 60; done
 ```
+
+> You've reached the end of the lab.
