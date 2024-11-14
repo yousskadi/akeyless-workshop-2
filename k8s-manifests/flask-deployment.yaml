@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: your-docker-registry/flask-app:latest
+          image: docker.io/your-dockerhub-username/flask-todo:latest
           env:
             - name: DB_HOST
               value: mysql-flask-todo
