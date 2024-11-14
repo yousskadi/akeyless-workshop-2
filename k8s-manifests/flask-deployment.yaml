@@ -29,11 +29,3 @@ spec:
               value: remote
           ports:
             - containerPort: 8080
-          volumeMounts:
-            - name: gateway-cert-volume
-              mountPath: /etc/ssl/certs/gateway_cert.pem
-              subPath: gateway_cert.pem
-      volumes:
-        - name: gateway-cert-volume
-          secret:
-            secretName: gateway-cert-secret
