@@ -3,7 +3,8 @@
 - [Akeyless Setup](#akeyless-setup)
   - [1. Access Akeyless via OIDC](#1-access-akeyless-via-oidc)
     - [1.1 Login to Akeyless UI via OIDC](#11-login-to-akeyless-ui-via-oidc)
-    - [1.2 Run a script to Login to Akeyless CLI via OIDC and create an API Key and associate it with an Access Role](#12-run-a-script-to-login-to-akeyless-cli-via-oidc-and-create-an-api-key-and-associate-it-with-an-access-role)
+    - [1.2 Login to Akeyless CLI via OIDC](#12-login-to-akeyless-cli-via-oidc)
+    - [1.3 Run a script to create an API Key and associate it with an Access Role](#13-run-a-script-to-create-an-api-key-and-associate-it-with-an-access-role)
   - [2. Create a Gateway in Akeyless](#2-create-a-gateway-in-akeyless)
     - [2.1 Create the Gateway](#21-create-the-gateway)
     - [2.2 Expose the Gateway Port 8000](#22-expose-the-gateway-port-8000)
@@ -21,14 +22,35 @@
 
 ### 1.1 Login to Akeyless UI via OIDC
 
-Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the `Sign in` button, then enter the `OIDC Access ID` then click `Sign in`. This will redirect you to GitHub to login. You will need to approve the access.
+Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the `Sign in` button, then enter this `OIDC Access ID` `p-j1ej0z1eudthim` then click `Sign in`. This will redirect you to GitHub to login. You will need to approve the access.
 
 ![alt text](../images/login-oidc.png)
 
-### 1.2 Run a script to Login to Akeyless CLI via OIDC and create an API Key and associate it with an Access Role
+### 1.2 Login to Akeyless CLI via OIDC
 
 ```bash
-./create_api_key.sh
+akeyless auth --access-id=p-j1ej0z1eudthim --access-type=oidc --use-remote-browser
+```
+
+Output:
+```
+Open the link below in your browser in order to complete the authentication:
+Link: https://auth.akeyless.io/oidc-login?access_id=p-j1ej0z1eudthim&redirect_uri=https://auth-relay.akeyless.io/creds-login&is_short_token=true
+```
+
+Click on the link above and login with your GitHub account.
+
+Then you will get a screen that says the following:
+
+![alt text](../images/oidc-auth-success.jpg)
+
+Click on the `Show Token` button and copy the token and save it somewhere to be used in the next step.
+
+![alt text](../images/copy-oidc-token.jpg)
+
+### 1.3 Run a script to create an API Key and associate it with an Access Role
+```bash
+Lab03/create_api_key.sh
 ```
 
 ## 2. Create a Gateway in Akeyless
