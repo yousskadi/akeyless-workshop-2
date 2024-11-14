@@ -6,6 +6,7 @@ akeyless configure --profile default --access-id "$(jq -r .access_id creds_api_k
 APP_NAME="flask-todo"
 NAMESPACE="flask-todo"
 DB_NAME="todos"
+DYNAMIC_SECRET_TTL="15s"
 AKEYLESS_MYSQL_SECRET_NAME="/Workshops/mysql_root_password"
 ARGOCD_SERVER="localhost:3000"  # ArgoCD server port-forwarded to 3000
 ARGOCD_USER="admin"
@@ -13,6 +14,7 @@ ARGOCD_PASS=$(kubectl get secret -n argocd argocd-initial-admin-secret -o json |
 # Get repository information from git
 REPO_URL=$(git config --get remote.origin.url)
 REPO_NAME=$(echo $REPO_URL | grep -o 'github.com[:/][^.]*' | sed 's#github.com[:/]##')
+GITHUB_USERNAME=$(echo $REPO_NAME | cut -d'/' -f1)
 REPO_URL="https://github.com/${REPO_NAME}.git"
 
 # Get Codespace name and construct Akeyless Gateway URL
@@ -22,8 +24,9 @@ if [ -z "$CODESPACE_NAME" ]; then
     exit 1
 fi
 
-CODESPACE_DOMAIN="app.github.dev/"
+CODESPACE_DOMAIN="app.github.dev"
 AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8080.${CODESPACE_DOMAIN}"
+export AKEYLESS_GATEWAY_URL=$AKEYLESS_GATEWAY_URL
 
 # Get MySQL root password from Akeyless
 echo "Fetching MySQL root password..."
@@ -66,7 +69,7 @@ kubectl wait --for=condition=ready pod -l app=mysql-$APP_NAME -n $NAMESPACE --ti
 # Create Akeyless target
 echo "Creating Akeyless target..."
 akeyless target create db \
-    --name "${AKEYLESS_MYSQL_SECRET_NAME}_target" \
+    --name "/Workshops/Workshop2/${GITHUB_USERNAME}/mysql_password_target" \
     --db-type mysql \
     --pwd "$MYSQL_ROOT_PASSWORD" \
     --host "mysql-${APP_NAME}.${NAMESPACE}.svc.cluster.local" \
@@ -76,11 +79,12 @@ akeyless target create db \
 
 # Create Akeyless dynamic secret
 echo "Creating Akeyless dynamic secret..."
+export AKEYLESS_GATEWAY_URL=$AKEYLESS_GATEWAY_URL
 akeyless dynamic-secret create mysql \
-    --name "${AKEYLESS_MYSQL_SECRET_NAME}_dynamic" \
-    --target-name "${AKEYLESS_MYSQL_SECRET_NAME}_target" \
-    --gateway-url $AKEYLESS_GATEWAY_URL \
-    --user-ttl "${DYNAMIC_SECRET_TTL}s" \
+    --name "/Workshops/Workshop2/${GITHUB_USERNAME}/mysql_password_dynamic" \
+    --target-name "/Workshops/Workshop2/${GITHUB_USERNAME}/mysql_password_target" \
+    --gateway-url "${AKEYLESS_GATEWAY_URL}" \
+    --user-ttl "${DYNAMIC_SECRET_TTL}" \
     --mysql-statements "CREATE USER '{{name}}'@'%' IDENTIFIED WITH mysql_native_password BY '{{password}}' PASSWORD EXPIRE INTERVAL 30 DAY;GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '{{name}}'@'%';" \
     --mysql-revocation-statements "REVOKE ALL PRIVILEGES, GRANT OPTION FROM '{{name}}'@'%'; DROP USER '{{name}}'@'%';" \
     --password-length 16 || true  # Continue if dynamic secret already exists
