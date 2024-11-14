@@ -17,6 +17,12 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 Change namespace to the `argocd` namespace:
 
 ```bash
+kubens argocd
+```
+
+Watch the pods until all are up:
+
+```bash
 watch kubectl get po
 ```
 
@@ -56,7 +62,7 @@ You can port forward the service like this:
 kubectl port-forward -n argocd service/argocd-server 3000:443
 ```
 
-Now go to the `Ports` tab at the bottom and right-click 
+Now go to the `Ports` tab at the bottom and right-click and change the protocol to `HTTPS`.
 
 ![alt text](../images/change-port-protocol.png)
 
