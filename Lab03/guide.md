@@ -60,17 +60,16 @@ Lab03/create_api_key.sh
 Run the following commands in the `Terminal` of your GitHub codespace.
 
 ```bash
-docker run -d -e ADMIN_ACCESS_ID="p-j1ej0z1eudthim" -e DEFAULT_OIDC_ACCESS_ID="p-j1ej0z1eudthim" -e ALLOWED_ACCESS_PERMISSIONS='[{"name": "Administrators", "access_id": "p-j1ej0z1eudthim"}]' -p 8000:8000 -p 8200:8200 -p 18888:18888 -p 8080:8080 -p 8081:8081 -p 5696:5696 --name akeyless-gw akeyless/base
+docker run -d -p 8000:8000 -p 8200:8200 -p 18888:18888 -p 8080:8080 -p 8081:8081 -p 5696:5696 --name akeyless-gateway akeyless/base:latest-akeyless
 ```
 
------------struggling here-----------
-the Akeyless UI is only giving me either to use the access keys or password.
-
-Check that the gateway is up and running
+Check the gateway logs and wait until they stop:
 
 ```bash
 docker logs -f akeyless-gw
 ```
+
+Hit `Ctrl+C` to stop the logs.
 
 ### 2.2 Expose the Gateway Port 8000
 
@@ -86,23 +85,23 @@ Approve the access to this port.
 
 ![alt text](../images/approve_port_access.png)
 
-Login using the `Password` option 
+Login using your API key credentials found in the `creds_api_key_auth.json` file in Lab03.
 
-![alt text](../images/change_to_password_for_gw.png)
-
-Use the same password you used to log into the Akeyless Console.
+![alt text](../images/gwy-sign-in.png)
 
 ![alt text](../images/gwy_view.png)
 
 Click on `Access Permissions` then on the `New` button.
 
-Give it a name `AdminAPI` and choose the `/AdminAPI` Auth method then click `Next.` Leave `Admin` selected and then click `Finish`.
+Give it a name `APIkey` and choose the `/Workshops/Workshop2/<your-name>/APIkey` Auth method then click `Next.` Leave `Admin` selected and then click `Finish`.
 
-![alt text](../images/gateway_access_permission.png)
+![alt text](../images/gwy-access-permissions.png)
 
-Add another permission for the `/admin` authentication method:
+Add another permission for the OIDC auth method: `/Workshops/TeKanAid Academy GitHub`
 
-![alt text](../images/more_admin_permissions_for_gateway.png)
+![alt text](../images/gwy-oidc-permissions.png)
+
+then click `Next.` Leave `Admin` selected and then click `Finish`.
 
 ### 2.4 Check the Gateway from the Akeyless Console
 
