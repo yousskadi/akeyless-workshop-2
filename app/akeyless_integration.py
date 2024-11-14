@@ -35,9 +35,9 @@ def authenticate_with_akeyless():
         "content-type": "application/json"
     }
     if os.environ.get('ENVIRONMENT') == 'remote':
-        response = requests.post(AUTH_URL, json=payload, headers=headers, verify="/etc/ssl/certs/gateway_cert.pem")
+        response = requests.post(AUTH_URL, json=payload, headers=headers)
     else:
-        response = requests.post(AUTH_URL, json=payload, headers=headers, verify="/home/sam/Development_Linux/customers/akeyless/akeyless-platform-engineering-port/gateway_cert.pem")
+        response = requests.post(AUTH_URL, json=payload, headers=headers)
     response.raise_for_status()
     return response.json().get('token')
 
@@ -54,9 +54,9 @@ def get_dynamic_secret(token):
         "content-type": "application/json"
     }
     if os.environ.get('ENVIRONMENT') == 'remote':
-        response = requests.post(SECRET_URL, json=payload, headers=headers, verify="/etc/ssl/certs/gateway_cert.pem")
+        response = requests.post(SECRET_URL, json=payload, headers=headers)
     else:
-        response = requests.post(SECRET_URL, json=payload, headers=headers, verify="/home/sam/Development_Linux/customers/akeyless/akeyless-platform-engineering-port/gateway_cert.pem")
+        response = requests.post(SECRET_URL, json=payload, headers=headers)
     response.raise_for_status()
     return response.json()
 
