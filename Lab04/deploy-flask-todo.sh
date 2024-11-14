@@ -26,7 +26,6 @@ fi
 
 CODESPACE_DOMAIN="app.github.dev"
 AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8080.${CODESPACE_DOMAIN}"
-export AKEYLESS_GATEWAY_URL=$AKEYLESS_GATEWAY_URL
 
 # Get MySQL root password from Akeyless
 echo "Fetching MySQL root password..."
@@ -79,7 +78,6 @@ akeyless target create db \
 
 # Create Akeyless dynamic secret
 echo "Creating Akeyless dynamic secret..."
-export AKEYLESS_GATEWAY_URL=$AKEYLESS_GATEWAY_URL
 akeyless dynamic-secret create mysql \
     --name "/Workshops/Workshop2/${GITHUB_USERNAME}/mysql_password_dynamic" \
     --target-name "/Workshops/Workshop2/${GITHUB_USERNAME}/mysql_password_target" \

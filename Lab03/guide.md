@@ -54,7 +54,10 @@ Lab03/create_api_key.sh
 Run the following commands in the `Terminal` of your GitHub codespace.
 
 ```bash
-docker run -d -p 8000:8000 -p 8200:8200 -p 18888:18888 -p 8080:8080 -p 8081:8081 -p 5696:5696 --name akeyless-gateway akeyless/base:latest-akeyless
+helm repo add akeyless https://akeylesslabs.github.io/helm-charts
+helm repo update
+kubectl create namespace akeyless
+helm upgrade --install gw akeyless/akeyless-api-gateway -f values.yaml -n akeyless
 ```
 
 Check the gateway logs and wait until they stop:
