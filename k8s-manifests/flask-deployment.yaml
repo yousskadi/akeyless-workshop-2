@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{APP_NAME}}
-  namespace: {{NAMESPACE}}
+  name: flask-todo
+  namespace: flask-todo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{APP_NAME}}
+      app: flask-todo
   template:
     metadata:
       labels:
-        app: {{APP_NAME}}
+        app: flask-todo
     spec:
       containers:
         - name: flask-app
           image: your-docker-registry/flask-app:latest
           env:
             - name: DB_HOST
-              value: mysql-{{APP_NAME}}
+              value: mysql-flask-todo
             - name: DB_NAME
-              value: {{DB_NAME}}
+              value: todos
             - name: DYNAMIC_SECRET_TTL
-              value: "{{DYNAMIC_SECRET_TTL}}"
+              value: "3600"
             - name: FLASK_APP
               value: run.py
             - name: ENVIRONMENT

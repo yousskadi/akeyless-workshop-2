@@ -1,11 +1,15 @@
 #!/bin/bash
 
 # Script configuration
+akeyless configure --profile default --access-id "$(jq -r .access_id creds_api_key_auth.json)" --access-key "$(jq -r .access_key creds_api_key_auth.json)"
+
 APP_NAME="flask-todo"
 NAMESPACE="flask-todo"
 DB_NAME="todos"
 AKEYLESS_MYSQL_SECRET_NAME="/Workshops/mysql_root_password"
-token=$(cat token_oidc_auth.txt)
+ARGOCD_SERVER="localhost:3000"  # ArgoCD server port-forwarded to 3000
+ARGOCD_USER="admin"
+ARGOCD_PASS=$(kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode)
 # Get repository information from git
 REPO_URL=$(git config --get remote.origin.url)
 REPO_NAME=$(echo $REPO_URL | grep -o 'github.com[:/][^.]*' | sed 's#github.com[:/]##')
@@ -23,7 +27,7 @@ AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8080.${CODESPACE_DOMAIN}"
 
 # Get MySQL root password from Akeyless
 echo "Fetching MySQL root password..."
-SECRET_JSON=$(akeyless get-secret-value --name "$AKEYLESS_MYSQL_SECRET_NAME" --token "$token")
+SECRET_JSON=$(akeyless get-secret-value --name "$AKEYLESS_MYSQL_SECRET_NAME")
 if ! MYSQL_ROOT_PASSWORD=$(echo "$SECRET_JSON" | jq -r .password); then
     MYSQL_ROOT_PASSWORD="$SECRET_JSON"
 fi
@@ -47,7 +51,7 @@ argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASS --gr
 echo "Creating ArgoCD application..."
 argocd app create $APP_NAME \
     --repo $REPO_URL \
-    --path . \
+    --path k8s-manifests \
     --dest-server https://kubernetes.default.svc \
     --dest-namespace $NAMESPACE \
     --project default \

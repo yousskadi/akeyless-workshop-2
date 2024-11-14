@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-{{APP_NAME}}
-  namespace: {{NAMESPACE}}
+  name: mysql-flask-todo
+  namespace: flask-todo
 spec:
   selector:
-    app: mysql-{{APP_NAME}}
+    app: mysql-flask-todo
   ports:
   - port: 3306
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{APP_NAME}}
-  namespace: {{NAMESPACE}}
+  name: flask-todo
+  namespace: flask-todo
 spec:
   selector:
-    app: {{APP_NAME}}
+    app: flask-todo
   ports:
   - port: 80
     targetPort: 8080
