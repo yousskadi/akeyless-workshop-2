@@ -10,6 +10,8 @@ from mysql.connector import pooling, Error as MySQLError
 AKEYLESS_K8S_AUTH_ID = os.environ.get('AKEYLESS_K8S_AUTH_ID')
 AKEYLESS_GATEWAY_URL = os.environ.get('AKEYLESS_GATEWAY_URL')
 AKEYLESS_GATEWAY_API_URL = os.environ.get('AKEYLESS_GATEWAY_API_URL')
+AKEYLESS_K8S_AUTH_CONFIG_NAME = os.environ.get('AKEYLESS_K8S_AUTH_CONFIG_NAME')
+DATABASE_DYNAMIC_SECRET_NAME = os.environ.get('DATABASE_DYNAMIC_SECRET_NAME')
 
 # URLs for Akeyless Gateway
 AUTH_URL = f"{AKEYLESS_GATEWAY_API_URL}/auth"
@@ -32,7 +34,7 @@ def authenticate_with_akeyless():
         "access-id": AKEYLESS_K8S_AUTH_ID,
         "debug": True,
         "gateway-url": AKEYLESS_GATEWAY_URL,
-        "k8s-auth-config-name": "/demos/K8s-Auth-for-Demos",
+        "k8s-auth-config-name": AKEYLESS_K8S_AUTH_CONFIG_NAME,
         "k8s-service-account-token": base64.b64encode(k8s_service_account_token.encode()).decode(),
     }
     headers = {
@@ -51,7 +53,7 @@ def get_dynamic_secret(token):
     payload = {
         "json": True,
         "timeout": 15,
-        "name": "/demos/mysql_root_password_dynamic",
+        "name": DATABASE_DYNAMIC_SECRET_NAME,
         "token": token
     }
     headers = {
