@@ -55,9 +55,24 @@ EOF
 
 kubectl apply -f akl_gw_token_reviewer_token.yaml
 
+echo "Waiting for token secret to be ready..."
+for i in {1..30}; do
+    if kubectl get secret gateway-token-reviewer-token &>/dev/null; then
+        echo "Token secret is ready"
+        break
+    fi
+    echo "Waiting for token secret... ($i/30)"
+    sleep 2
+done
+
 echo "Extracting ServiceAccount JWT Bearer Token..."
 SA_JWT_TOKEN=$(kubectl get secret gateway-token-reviewer-token \
   --output 'go-template={{.data.token | base64decode}}')
+
+if [ -z "$SA_JWT_TOKEN" ]; then
+    echo "Error: Failed to get JWT token"
+    exit 1
+fi
 
 echo "Extracting K8s Cluster CA Certificate..."
 CA_CERT=$(kubectl config view --raw --minify --flatten \
