@@ -16,7 +16,7 @@
 
 ### 1.1 Login to Akeyless UI via OIDC
 
-Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the `Sign in` button, then enter this `OIDC Access ID` `p-j1ej0z1eudthim` then click `Sign in`. This will redirect you to GitHub to login. You will need to approve the access.
+Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the `Sign in` button, then enter this `OIDC Access ID` ***`p-j1ej0z1eudthim`*** then click `Sign in`. This will redirect you to GitHub to login. You will need to approve the access.
 
 ![alt text](../images/login-oidc.png)
 
