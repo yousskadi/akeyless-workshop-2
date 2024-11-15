@@ -33,5 +33,9 @@ spec:
               value: https://animated-space-potato-4grg9r75r6w35qq6-8000.app.github.dev
             - name: AKEYLESS_GATEWAY_API_URL
               value: https://animated-space-potato-4grg9r75r6w35qq6-8081.app.github.dev
+            - name: AKEYLESS_K8S_AUTH_CONFIG_NAME
+              value: /Workshops/Workshop2/tekanaid/k8s-auth-method
+            - name: DATABASE_DYNAMIC_SECRET_NAME
+              value: /Workshops/Workshop2/tekanaid/mysql_password_dynamic
           ports:
             - containerPort: 8080
