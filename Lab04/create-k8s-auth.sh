@@ -22,13 +22,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: gateway-token-reviewer
-  namespace: default
+  namespace: akeyless
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: role-tokenreview-binding
-  namespace: default
+  namespace: akeyless
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -36,7 +36,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: gateway-token-reviewer
-  namespace: default
+  namespace: akeyless
 EOF
 
 kubectl apply -f akl_gw_token_reviewer.yaml
@@ -47,7 +47,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: gateway-token-reviewer-token
-  namespace: default
+  namespace: akeyless
   annotations:
     kubernetes.io/service-account.name: gateway-token-reviewer
 type: kubernetes.io/service-account-token
@@ -57,7 +57,7 @@ kubectl apply -f akl_gw_token_reviewer_token.yaml
 
 echo "Waiting for token secret to be ready..."
 for i in {1..30}; do
-    if kubectl get secret gateway-token-reviewer-token -o jsonpath='{.data.token}' &>/dev/null; then
+    if kubectl get secret gateway-token-reviewer-token -n akeyless -o jsonpath='{.data.token}' &>/dev/null; then
         echo "Token secret is ready"
         break
     fi
@@ -66,11 +66,11 @@ for i in {1..30}; do
 done
 
 # Debug output
-echo "Listing secrets in default namespace:"
-kubectl get secrets
+echo "Listing secrets in akeyless namespace:"
+kubectl get secrets -n akeyless
 
 echo "Extracting ServiceAccount JWT Bearer Token..."
-SA_JWT_TOKEN=$(kubectl get secret gateway-token-reviewer-token \
+SA_JWT_TOKEN=$(kubectl get secret gateway-token-reviewer-token -n akeyless \
   --output 'go-template={{.data.token | base64decode}}')
 
 if [ -z "$SA_JWT_TOKEN" ]; then
