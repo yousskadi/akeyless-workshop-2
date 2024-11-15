@@ -102,7 +102,7 @@ Login using your API key credentials found in the `creds_api_key_auth.json` file
 
 Click on `Access Permissions` then on the `New` button.
 
-Give it a name `APIkey` and choose the `/Workshops/Workshop2/<your-name>/APIkey` Auth method then click `Next.` Leave `Admin` selected and then click `Finish`.
+Give it a name `APIkey` and choose the `/Workshops/Workshop2/<your-github-username>/APIkey` Auth method then click `Next.` Leave `Admin` selected and then click `Finish`.
 
 ![alt text](../images/gwy-access-permissions.png)
 
