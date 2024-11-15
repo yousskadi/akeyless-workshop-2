@@ -28,7 +28,7 @@ spec:
             - name: ENVIRONMENT
               value: remote
             - name: AKEYLESS_K8S_AUTH_ID
-              value: p-x6cuxpz6rv7ckm
+              value: p-83ve3ht3d7zukm
             - name: AKEYLESS_GATEWAY_URL
               value: https://animated-space-potato-4grg9r75r6w35qq6-8000.app.github.dev
             - name: AKEYLESS_GATEWAY_API_URL
