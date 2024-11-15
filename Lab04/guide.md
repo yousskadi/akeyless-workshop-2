@@ -1,11 +1,20 @@
 # Application Setup
 
 - [Application Setup](#application-setup)
-  - [1. Run the deploy script](#1-run-the-deploy-script)
+  - [1. Create a K8s Auth Method in Akeyless](#1-create-a-k8s-auth-method-in-akeyless)
+  - [2. Run the deploy script](#2-run-the-deploy-script)
   - [2. Spend some time exploring the script](#2-spend-some-time-exploring-the-script)
 
+## 1. Create a K8s Auth Method in Akeyless
 
-## 1. Run the deploy script
+Run the following script to create a K8s Auth Method in Akeyless:
+
+```bash
+Lab04/create-k8s-auth.sh
+```
+
+
+## 2. Run the deploy script
 
 Run the following command from the root of the repository in a terminal window to deploy the application:
 
