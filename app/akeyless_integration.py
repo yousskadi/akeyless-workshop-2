@@ -7,8 +7,8 @@ import time
 from mysql.connector import pooling, Error as MySQLError
 
 # URLs for Akeyless Gateway
-AUTH_URL = "https://192.168.1.82:8081/auth"
-SECRET_URL = "https://192.168.1.82:8081/get-dynamic-secret-value"
+AUTH_URL = "https://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8081/auth"
+SECRET_URL = "https://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8081/get-dynamic-secret-value"
 
 # Load the service account token
 def get_k8s_service_account_token():
@@ -26,7 +26,7 @@ def authenticate_with_akeyless():
         "json": True,
         "access-id": "p-trkddl1zvs2qkm",
         "debug": True,
-        "gateway-url": "https://192.168.1.82:8000",
+        "gateway-url": "https://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8000",
         "k8s-auth-config-name": "/demos/K8s-Auth-for-Demos",
         "k8s-service-account-token": base64.b64encode(k8s_service_account_token.encode()).decode(),
     }

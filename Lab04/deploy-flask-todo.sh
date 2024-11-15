@@ -25,7 +25,7 @@ if [ -z "$CODESPACE_NAME" ]; then
 fi
 
 CODESPACE_DOMAIN="app.github.dev"
-AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8080.${CODESPACE_DOMAIN}"
+AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8000.${CODESPACE_DOMAIN}"
 
 # Get MySQL root password from Akeyless
 echo "Fetching MySQL root password..."

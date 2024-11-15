@@ -57,20 +57,32 @@ Run the following commands in the `Terminal` of your GitHub codespace.
 helm repo add akeyless https://akeylesslabs.github.io/helm-charts
 helm repo update
 kubectl create namespace akeyless
-helm upgrade --install gw akeyless/akeyless-api-gateway -f values.yaml -n akeyless
+helm upgrade --install gw akeyless/akeyless-api-gateway --namespace akeyless --set akeylessUserAuth.adminAccessId=$(jq -r .access_id creds_api_key_auth.json)
+kubens akeyless
 ```
 
 Check the gateway logs and wait until they stop:
 
 ```bash
-docker logs -f akeyless-gw
+watch kubectl get pods -n akeyless
+```
+Sample Output:
+```
+NAME                                       READY   STATUS    RESTARTS   AGE
+gw-akeyless-api-gateway-6fdbbbfbb6-fmgzd   1/1     Running   0          9m37s
+gw-akeyless-api-gateway-6fdbbbfbb6-gl4n5   1/1     Running   0          9m37s
 ```
 
-Hit `Ctrl+C` to stop the logs.
+Hit `Ctrl+C` to stop
 
 ### 2.2 Expose the Gateway Port 8000
 
-Click on the `PORTS` tab beside the `TERMINAL` tab and right click on port `8000` and change the `Port Visibility` to `Public`.
+First, open a new terminal in your codespace and run the following command:
+```bash
+kubectl port-forward svc/gw-akeyless-api-gateway 8000:8000 -n akeyless
+```
+
+Then, in the codespace, click on the `PORTS` tab beside the `TERMINAL` tab and right click on port `8000` and change the `Port Visibility` to `Public`.
 ![alt text](../images/port_visibility_public.png)
 
 ### 2.3 Give Permission
