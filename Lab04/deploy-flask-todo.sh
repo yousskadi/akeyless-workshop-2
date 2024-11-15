@@ -50,17 +50,22 @@ echo "Logging into ArgoCD..."
 argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASS --grpc-web --insecure
 
 # Replace Akeyless Gateway URL in deployment manifest
-sed -i 's|<AKEYLESS_GATEWAY_URL_placeholder>|'"$AKEYLESS_GATEWAY_URL"'|g' k8s-manifests/flask-deployment.yaml
+sed -i 's|value: https://.*-8000\.app\.github\.dev|value: '"$AKEYLESS_GATEWAY_URL"'|g' k8s-manifests/flask-deployment.yaml
 
 # Replace Akeyless Gateway API URL in deployment manifest
-sed -i 's|<AKEYLESS_GATEWAY_API_URL_placeholder>|'"$AKEYLESS_GATEWAY_API_URL"'|g' k8s-manifests/flask-deployment.yaml
+sed -i 's|value: https://.*-8081\.app\.github\.dev|value: '"$AKEYLESS_GATEWAY_API_URL"'|g' k8s-manifests/flask-deployment.yaml
 
 # Get Akeyless K8S Auth ID
 AKEYLESS_K8S_AUTH_ID=$(cat k8s_auth_access_id.txt)
 
 # Replace Akeyless K8S Auth ID in deployment manifest
-sed -i 's|<AKEYLESS_K8S_AUTH_ID_placeholder>|'"$AKEYLESS_K8S_AUTH_ID"'|g' k8s-manifests/flask-deployment.yaml
+sed -i 's|value: p-[a-zA-Z0-9]*|value: '"$AKEYLESS_K8S_AUTH_ID"'|g' k8s-manifests/flask-deployment.yaml
 
+# Push changes to the repository
+echo "Pushing changes to repository..."
+git add k8s-manifests/
+git commit -m "Update Akeyless Gateway URLs and Auth ID in deployment manifest"
+git push origin main
 # Create ArgoCD application
 echo "Creating ArgoCD application..."
 argocd app create $APP_NAME \
