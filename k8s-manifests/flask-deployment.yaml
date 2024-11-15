@@ -27,5 +27,11 @@ spec:
               value: run.py
             - name: ENVIRONMENT
               value: remote
+            - name: AKEYLESS_K8S_AUTH_ID
+              value: <AKEYLESS_K8S_AUTH_ID_placeholder>
+            - name: AKEYLESS_GATEWAY_URL
+              value: <AKEYLESS_GATEWAY_URL_placeholder>
+            - name: AKEYLESS_GATEWAY_API_URL
+              value: <AKEYLESS_GATEWAY_API_URL_placeholder>
           ports:
             - containerPort: 8080

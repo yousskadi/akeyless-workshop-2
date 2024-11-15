@@ -26,7 +26,7 @@ fi
 
 CODESPACE_DOMAIN="app.github.dev"
 AKEYLESS_GATEWAY_URL="https://${CODESPACE_NAME}-8000.${CODESPACE_DOMAIN}"
-
+AKEYLESS_GATEWAY_API_URL="https://${CODESPACE_NAME}-8081.${CODESPACE_DOMAIN}"
 # Get MySQL root password from Akeyless
 echo "Fetching MySQL root password..."
 SECRET_JSON=$(akeyless get-secret-value --name "$AKEYLESS_MYSQL_SECRET_NAME")
@@ -48,6 +48,18 @@ kubectl create secret generic mysql-root-secret \
 # Login to ArgoCD
 echo "Logging into ArgoCD..."
 argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASS --grpc-web --insecure
+
+# Replace Akeyless Gateway URL in deployment manifest
+sed -i 's|<AKEYLESS_GATEWAY_URL_placeholder>|'"$AKEYLESS_GATEWAY_URL"'|g' k8s-manifests/flask-deployment.yaml
+
+# Replace Akeyless Gateway API URL in deployment manifest
+sed -i 's|<AKEYLESS_GATEWAY_API_URL_placeholder>|'"$AKEYLESS_GATEWAY_API_URL"'|g' k8s-manifests/flask-deployment.yaml
+
+# Get Akeyless K8S Auth ID
+AKEYLESS_K8S_AUTH_ID=$(cat k8s_auth_access_id.txt)
+
+# Replace Akeyless K8S Auth ID in deployment manifest
+sed -i 's|<AKEYLESS_K8S_AUTH_ID_placeholder>|'"$AKEYLESS_K8S_AUTH_ID"'|g' k8s-manifests/flask-deployment.yaml
 
 # Create ArgoCD application
 echo "Creating ArgoCD application..."

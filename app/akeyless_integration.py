@@ -6,9 +6,14 @@ from flask import current_app, g
 import time
 from mysql.connector import pooling, Error as MySQLError
 
+# Read Akeyless configuration from environment variables
+AKEYLESS_K8S_AUTH_ID = os.environ.get('AKEYLESS_K8S_AUTH_ID')
+AKEYLESS_GATEWAY_URL = os.environ.get('AKEYLESS_GATEWAY_URL')
+AKEYLESS_GATEWAY_API_URL = os.environ.get('AKEYLESS_GATEWAY_API_URL')
+
 # URLs for Akeyless Gateway
-AUTH_URL = "http://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8081/auth"
-SECRET_URL = "http://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8081/get-dynamic-secret-value"
+AUTH_URL = f"{AKEYLESS_GATEWAY_API_URL}/auth"
+SECRET_URL = f"{AKEYLESS_GATEWAY_API_URL}/get-dynamic-secret-value"
 
 # Load the service account token
 def get_k8s_service_account_token():
@@ -24,9 +29,9 @@ def authenticate_with_akeyless():
     payload = {
         "access-type": "k8s",
         "json": True,
-        "access-id": "<access-id>",
+        "access-id": AKEYLESS_K8S_AUTH_ID,
         "debug": True,
-        "gateway-url": "http://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8000",
+        "gateway-url": AKEYLESS_GATEWAY_URL,
         "k8s-auth-config-name": "/demos/K8s-Auth-for-Demos",
         "k8s-service-account-token": base64.b64encode(k8s_service_account_token.encode()).decode(),
     }
