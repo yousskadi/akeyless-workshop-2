@@ -28,6 +28,14 @@ def get_k8s_service_account_token():
 # Authenticate with Akeyless using Kubernetes auth
 def authenticate_with_akeyless():
     k8s_service_account_token = get_k8s_service_account_token()
+    
+    # Debug logging
+    print("Debug: Service Account Token:", k8s_service_account_token[:20] + "..." if k8s_service_account_token else "None")
+    print("Debug: Auth ID:", AKEYLESS_K8S_AUTH_ID)
+    print("Debug: Gateway URL:", AKEYLESS_GATEWAY_URL)
+    print("Debug: Auth Config Name:", AKEYLESS_K8S_AUTH_CONFIG_NAME)
+    print("Debug: Auth URL:", AUTH_URL)
+    
     payload = {
         "access-type": "k8s",
         "json": True,
@@ -37,16 +45,24 @@ def authenticate_with_akeyless():
         "k8s-auth-config-name": AKEYLESS_K8S_AUTH_CONFIG_NAME,
         "k8s-service-account-token": base64.b64encode(k8s_service_account_token.encode()).decode(),
     }
+    
+    # Debug logging
+    print("Debug: Full Payload:", payload)
+    
     headers = {
         "accept": "application/json",
         "content-type": "application/json"
     }
-    if os.environ.get('ENVIRONMENT') == 'remote':
+    
+    try:
         response = requests.post(AUTH_URL, json=payload, headers=headers)
-    else:
-        response = requests.post(AUTH_URL, json=payload, headers=headers)
-    response.raise_for_status()
-    return response.json().get('token')
+        print("Debug: Response Status:", response.status_code)
+        print("Debug: Response Body:", response.text)
+        response.raise_for_status()
+        return response.json().get('token')
+    except requests.exceptions.RequestException as e:
+        print("Debug: Request Exception:", str(e))
+        raise
 
 # Retrieve the dynamic secret
 def get_dynamic_secret(token):
