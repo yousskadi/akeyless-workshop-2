@@ -2,6 +2,9 @@
 
 # Exit on error
 set -e
+
+akeyless configure --profile default --access-id "$(jq -r .access_id creds_api_key_auth.json)" --access-key "$(jq -r .access_key creds_api_key_auth.json)"
+
 # Get repository information from git
 REPO_URL=$(git config --get remote.origin.url)
 REPO_NAME=$(echo $REPO_URL | grep -o 'github.com[:/][^.]*' | sed 's#github.com[:/]##')
@@ -83,7 +86,7 @@ CA_CERT=$(kubectl config view --raw --minify --flatten \
   --output 'jsonpath={.clusters[].cluster.certificate-authority-data}')
 
 echo "Creating K8s Auth Method..."
-AUTH_RESPONSE=$(akeyless create-auth-method-k8s -n my-k8s-auth-method --json)
+AUTH_RESPONSE=$(akeyless create-auth-method-k8s -n "/Workshops/Workshop2/${GITHUB_USERNAME}/k8s-auth-method" --json)
 ACCESS_ID=$(echo $AUTH_RESPONSE | jq -r .access_id)
 PRV_KEY=$(echo $AUTH_RESPONSE | jq -r .prv_key)
 
@@ -108,5 +111,10 @@ akeyless gateway-create-k8s-auth-config \
   --k8s-ca-cert "$CA_CERT" \
   --k8s-issuer "$K8S_ISSUER"
 
+# Save access ID to a file
+echo "Saving access ID to file..."
+echo "$ACCESS_ID" > k8s_auth_access_id.txt
+
 echo "Auth Method Access ID: $ACCESS_ID"
+echo "Access ID saved to k8s_auth_access_id.txt"
 echo "Setup complete!"

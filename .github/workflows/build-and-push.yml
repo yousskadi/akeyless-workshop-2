@@ -34,6 +34,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Inject Akeyless access ID
+        run: |
+          ACCESS_ID=$(cat k8s_auth_access_id.txt)
+          sed -i "s/<access-id>/$ACCESS_ID/" app/akeyless_integration.py
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:

@@ -24,7 +24,7 @@ def authenticate_with_akeyless():
     payload = {
         "access-type": "k8s",
         "json": True,
-        "access-id": "p-trkddl1zvs2qkm",
+        "access-id": "<access-id>",
         "debug": True,
         "gateway-url": "http://gw-akeyless-api-gateway.akeyless.svc.cluster.local:8000",
         "k8s-auth-config-name": "/demos/K8s-Auth-for-Demos",
