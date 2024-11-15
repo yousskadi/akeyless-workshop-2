@@ -19,6 +19,18 @@ Start a GitHub Codespace on your forked repo.
 ```bash
 minikube start --cpus 3 --memory 8g
 ```
+Wait for minikube to be ready. Then run the follwing command to check nodes:
+
+```bash
+kubectl get nodes
+```
+
+You should see something like this:
+
+```
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   12s   v1.31.0
+```
 
 ## 4. Tun a keep alive for the codespace
 

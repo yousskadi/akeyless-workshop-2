@@ -26,10 +26,11 @@ Watch the pods until all are up:
 watch kubectl get po
 ```
 
+Wait until all pods are up:
+
 Expected output:
 
 ```
-Wait until all pods are up 
 Every 2.0s: kubectl get po                                                                                                                                                    codespaces-9a4c2b: Tue Nov 12 21:42:03 2024
 
 NAME                                                READY   STATUS    RESTARTS      AGE
