@@ -57,13 +57,17 @@ kubectl apply -f akl_gw_token_reviewer_token.yaml
 
 echo "Waiting for token secret to be ready..."
 for i in {1..30}; do
-    if kubectl get secret gateway-token-reviewer-token &>/dev/null; then
+    if kubectl get secret gateway-token-reviewer-token -o jsonpath='{.data.token}' &>/dev/null; then
         echo "Token secret is ready"
         break
     fi
     echo "Waiting for token secret... ($i/30)"
     sleep 2
 done
+
+# Debug output
+echo "Listing secrets in default namespace:"
+kubectl get secrets
 
 echo "Extracting ServiceAccount JWT Bearer Token..."
 SA_JWT_TOKEN=$(kubectl get secret gateway-token-reviewer-token \
