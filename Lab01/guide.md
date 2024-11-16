@@ -1,10 +1,19 @@
 # Environment Setup
+This lab will help you set up your development environment by forking the repository, starting a GitHub Codespace, and running a local Kubernetes cluster using minikube.
 
+Key Objectives:
+- Fork the workshop repository to your GitHub account
+- Launch a GitHub Codespace development environment
+- Start a minikube Kubernetes cluster
+- Configure a keep-alive to prevent the Codespace from timing out
+
+Table of Contents:
 - [Environment Setup](#environment-setup)
   - [1. Fork GitHub Repo](#1-fork-github-repo)
   - [2. Start a Codespace](#2-start-a-codespace)
   - [3. Run minikube](#3-run-minikube)
   - [4. Tun a keep alive for the codespace](#4-tun-a-keep-alive-for-the-codespace)
+
 
 ## 1. Fork GitHub Repo
 

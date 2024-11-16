@@ -55,8 +55,9 @@ sed -i 's|value: https://.*-8000\.app\.github\.dev|value: '"$AKEYLESS_GATEWAY_UR
 # Replace Akeyless Gateway API URL in deployment manifest
 sed -i 's|value: https://.*-8081\.app\.github\.dev|value: '"$AKEYLESS_GATEWAY_API_URL"'|g' k8s-manifests/flask-deployment.yaml
 
-# Get Akeyless K8S Auth ID
-AKEYLESS_K8S_AUTH_ID=$(cat k8s_auth_access_id.txt)
+# Get the access ID from the k8s auth method
+echo "Getting Akeyless K8S Auth Method access ID..."
+AKEYLESS_K8S_AUTH_ID=$(akeyless auth-method list | jq -r ".auth_methods[] | select(.auth_method_name == \"/Workshops/Workshop2/${GITHUB_USERNAME}/k8s-auth-method\") | .auth_method_access_id")
 
 # Replace Akeyless K8S Auth ID in deployment manifest
 sed -i 's|value: p-[a-zA-Z0-9]*|value: '"$AKEYLESS_K8S_AUTH_ID"'|g' k8s-manifests/flask-deployment.yaml
@@ -64,6 +65,9 @@ sed -i 's|value: p-[a-zA-Z0-9]*|value: '"$AKEYLESS_K8S_AUTH_ID"'|g' k8s-manifest
 # Replace GitHub username in auth config name and dynamic secret paths
 sed -i 's|/Workshops/Workshop2/[^/]*/k8s-auth-method|/Workshops/Workshop2/'"$GITHUB_USERNAME"'/k8s-auth-method|g' k8s-manifests/flask-deployment.yaml
 sed -i 's|/Workshops/Workshop2/[^/]*/mysql_password_dynamic|/Workshops/Workshop2/'"$GITHUB_USERNAME"'/mysql_password_dynamic|g' k8s-manifests/flask-deployment.yaml
+
+# Replace GitHub username in env variable
+sed -i 's|name: GITHUB_USERNAME.*|name: GITHUB_USERNAME\n              value: '"$GITHUB_USERNAME"'|g' k8s-manifests/flask-deployment.yaml
 
 # Push changes to the repository
 echo "Pushing changes to repository..."

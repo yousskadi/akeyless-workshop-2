@@ -1,5 +1,13 @@
 # Prepare ArgoCD
+This lab will help you set up ArgoCD in your minikube Kubernetes cluster and configure access to it through both the UI and CLI.
 
+Key Objectives:
+- Install ArgoCD in your Kubernetes cluster 
+- Access the ArgoCD UI using port forwarding
+- Login to ArgoCD using the CLI
+- Configure initial admin credentials
+
+Table of Contents:
 - [Prepare ArgoCD](#prepare-argocd)
   - [1. Install ArgoCD](#1-install-argocd)
   - [2. Get the initial admin password](#2-get-the-initial-admin-password)
