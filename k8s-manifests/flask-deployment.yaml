@@ -37,5 +37,7 @@ spec:
               value: /Workshops/Workshop2/tekanaid/k8s-auth-method
             - name: DATABASE_DYNAMIC_SECRET_NAME
               value: /Workshops/Workshop2/tekanaid/mysql_password_dynamic
+            - name: GITHUB_USERNAME
+              value: tekanaid
           ports:
             - containerPort: 8080

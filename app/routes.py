@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, url_for, current_app, flash
+import os
 
 from .akeyless_integration import get_db
 
@@ -11,8 +12,8 @@ def init_app(app):
                 print(f"Received todo text: '{todo_text}'")
                 if todo_text.lower().strip() == "akeyless secured my app":
                     print("Easter egg triggered!")
-                    success_message = """
-                    🎉 Congratulations! You've found the easter egg! 
+                    success_message = f"""
+                    🎉 Congratulations {os.environ.get('GITHUB_USERNAME', 'user')}! You've found the easter egg! 
                     
                     By successfully adding a todo item, you've proven that:
                     ✅ Your ArgoCD deployment is working
