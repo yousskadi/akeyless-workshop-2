@@ -8,7 +8,9 @@ def init_app(app):
         if request.method == 'POST':
             if 'add' in request.form:
                 todo_text = request.form['todo']
-                if todo_text.lower() == "akeyless secured my app":
+                print(f"Received todo text: '{todo_text}'")
+                if todo_text.lower().strip() == "akeyless secured my app":
+                    print("Easter egg triggered!")
                     success_message = """
                     🎉 Congratulations! You've found the easter egg! 
                     
