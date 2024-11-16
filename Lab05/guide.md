@@ -1,5 +1,15 @@
 # Investigating the Flask App
 
+This lab will help you investigate how the Flask App works with Akeyless dynamic secrets and the MySQL database.
+
+Key Objectives:
+- Expose and interact with the Flask App UI
+- View the application deployment status in ArgoCD
+- Examine the Flask App logs to understand dynamic secret rotation
+
+Table of Contents:
+
+
 - [Investigating the Flask App](#investigating-the-flask-app)
   - [1. Expose the Flask App](#1-expose-the-flask-app)
   - [2. Check the ArgoCD UI](#2-check-the-argocd-ui)

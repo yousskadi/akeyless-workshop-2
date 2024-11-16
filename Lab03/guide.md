@@ -1,5 +1,16 @@
 # Akeyless Setup
 
+This lab will help you set up Akeyless in your minikube Kubernetes cluster and create a gateway.
+
+Key Objectives:
+- Access Akeyless via OIDC
+- Create an API Key and associate it with an Access Role
+- Create a Gateway in Akeyless
+- Give permissions to access the Gateway
+- Check the Gateway from the Akeyless Console 
+
+Table of Contents:
+
 - [Akeyless Setup](#akeyless-setup)
   - [1. Access Akeyless via OIDC](#1-access-akeyless-via-oidc)
     - [1.1 Login to Akeyless UI via OIDC](#11-login-to-akeyless-ui-via-oidc)
@@ -46,6 +57,16 @@ Click on the `Show Token` button and copy the token and save it somewhere to be 
 ```bash
 Lab03/create_api_key.sh
 ```
+
+This script does the following:
+
+1. Gets your GitHub username from the git remote URL
+2. Prompts you for your OIDC token and saves it to a file
+3. Creates an API key auth method under `/Workshops/Workshop2/<your-github-username>/APIkey` if it doesn't exist, or resets the existing one
+4. Saves the API key credentials (name, access ID, and access key) to `creds_api_key_auth.json`
+5. Associates the API key with the `/Workshops/Workshop2` access role if not already associated
+
+The generated API key credentials will be used later for authentication with the Akeyless gateway.
 
 ## 2. Create a Gateway in Akeyless
 
