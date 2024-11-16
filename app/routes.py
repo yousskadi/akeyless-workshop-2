@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, current_app
+from flask import render_template, request, redirect, url_for, current_app, flash
 
 from .akeyless_integration import get_db
 
@@ -7,7 +7,23 @@ def init_app(app):
     def index():
         if request.method == 'POST':
             if 'add' in request.form:
-                add_todo(request.form['todo'])
+                todo_text = request.form['todo']
+                if todo_text.lower() == "akeyless secured my app":
+                    success_message = """
+                    🎉 Congratulations! You've found the easter egg! 
+                    
+                    By successfully adding a todo item, you've proven that:
+                    ✅ Your ArgoCD deployment is working
+                    ✅ Akeyless Gateway authentication is successful
+                    ✅ Dynamic secrets are rotating properly
+                    ✅ MySQL database is connected
+                    ✅ The entire GitOps pipeline is functional
+                    
+                    Share your achievement on LinkedIn! 
+                    #AkeylessWorkshop #CloudNativeSecurity #ZeroTrust
+                    """
+                    flash(success_message, 'success')
+                add_todo(todo_text)
             elif 'delete' in request.form:
                 delete_todo(request.form['delete'])
             return redirect(url_for('index'))

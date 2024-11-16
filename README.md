@@ -69,6 +69,8 @@ This workshop guides participants through building and deploying a secure Flask 
 ## Getting Started
 Begin with [Lab 1: Environment Setup](Lab01/guide.md) to start your journey through the workshop.
 
+> **Hint**: Once you complete the workshop, try adding a todo item with the text "Akeyless secured my app" for a surprise! 🔐
+
 ## If Your Codespace Times Out or You Need to Restart
 
 This is the order of what you need to do if your codespace times out or you need to restart:
@@ -84,19 +86,24 @@ minikube start --cpus 3 --memory 8g
 ```
 
 ### 3. Get all pods
-Check the status of all pods:
+Once the minikube cluster is ready, check the status of all pods:
 ```bash
-kubectl get pods -A
+watch kubectl get pods -A
 ```
-wait till they are all running.
+wait till they are all running except for the Akeyless Gateway pods (will be in 0/1 Running state) and the Flask application pod (will be in 0/ CrashLoopBackOff state).
 
 ### 4. Delete the Akeyless Gateway Replicaset which will restart it
-
-If the Akeyless Gateway pods take a while to start, you can restart the replicaset.
 
 ```bash
 kubectl delete replicaset gw-akeyless-api-gateway-<random-string> -n akeyless
 ```
+
+Check the status of all pods again:
+```bash
+watch kubectl get pods -A
+```
+
+wait till the Akeyless Gateway pods are in a 1/1 Running state.
 
 ### 5. Port forward the services
 
@@ -125,14 +132,24 @@ kubectl port-forward svc/flask-todo 5000:80 -n flask-todo
 
 ### 6. Login to the Akeyless Gateway UI
 
-This will reset the connection between the Gateway and the Akeyless Console.
+This will reset the connection between the Gateway and the Akeyless Console. If you click on the globe icon on the Port `8000` line to open the Akeyless Gateway UI in a new tab and find yourself logged in, please log out and log back in.
+
+Use the credentials in the file `creds_api_key_auth.json` to login to the Akeyless Gateway.
 
 ### 7. Login to ArgoCD
 
 - Username: `admin`
 - Password: `kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode`
 
-### 8. [Optional] Login to the Akeyless Console
+If you find the flask application pod still in a CrashLoopBackOff state, you can restart the pod by deleting it from ArgoCD directly.
+
+### 8. Check the Flask Application UI
+
+Go to the ports section in your codespace and click on the globe icon on the Port `5000` line to open the Flask App in a new tab.
+
+Start interacting with the Flask App by adding and deleting todo items and find the Easter Egg if you haven't already! 🔐
+
+### 9. [Optional] Login to the Akeyless Console
 
 Use the following OIDC Access ID when logging into Akeyless via OIDC (both UI and CLI).
 `p-j1ej0z1eudthim`

@@ -14,6 +14,7 @@ Table of Contents:
   - [1. Expose the Flask App](#1-expose-the-flask-app)
   - [2. Check the ArgoCD UI](#2-check-the-argocd-ui)
   - [3. Check the Flask App Logs in ArgoCD](#3-check-the-flask-app-logs-in-argocd)
+  - [4. Find the Easter Egg](#4-find-the-easter-egg)
 
 
 ## 1. Expose the Flask App
@@ -49,6 +50,9 @@ Now notice how the logs are showing how the Flask App is using the MySQL databas
 
 Interact with the Flask App by adding and deleting todo items to see how the dynamic secrets are being rotated.
 
+## 4. Find the Easter Egg
+
+Try adding a todo item with the text "Akeyless secured my app" for a surprise! 🔐
 
 > Congratulations on finishing this workshop! You've successfully deployed a Flask App that uses akeyless MySQL database and dynamically rotates the credentials using Akeyless.
 
