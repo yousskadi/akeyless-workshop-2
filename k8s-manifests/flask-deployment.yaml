@@ -38,6 +38,6 @@ spec:
             - name: DATABASE_DYNAMIC_SECRET_NAME
               value: /Workshops/Workshop2/tekanaid/mysql_password_dynamic
             - name: GITHUB_USERNAME
-              value: sam
+              value: tekanaid
           ports:
             - containerPort: 8080
