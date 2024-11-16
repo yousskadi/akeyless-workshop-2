@@ -69,3 +69,83 @@ This workshop guides participants through building and deploying a secure Flask 
 ## Getting Started
 Begin with [Lab 1: Environment Setup](Lab01/guide.md) to start your journey through the workshop.
 
+## If Your Codespace Times Out or You Need to Restart
+
+This is the order of what you need to do if your codespace times out or you need to restart:
+
+### 1. Run the keep alive command
+```bash
+while true; do date; sleep 60; done
+```
+
+### 2. Run minikube
+```bash
+minikube start --cpus 3 --memory 8g
+```
+
+### 3. Get all pods
+Check the status of all pods:
+```bash
+kubectl get pods -A
+```
+wait till they are all running.
+
+### 4. Delete the Akeyless Gateway Replicaset which will restart it
+
+If the Akeyless Gateway pods take a while to start, you can restart the replicaset.
+
+```bash
+kubectl delete replicaset gw-akeyless-api-gateway-<random-string> -n akeyless
+```
+
+### 5. Port forward the services
+
+#### 5.1 ArgoCD UI
+```bash
+kubectl port-forward -n argocd service/argocd-server 3000:443
+```
+Remember to set the port protocol to HTTPS in the Ports tab.
+
+#### 5.2 Akeyless Gateway
+```bash
+kubectl port-forward svc/gw-akeyless-api-gateway 8000:8000 -n akeyless
+```
+Remember to set the port visibility to Public in the Ports tab.
+
+#### 5.3 Akeyless API
+```bash
+kubectl port-forward svc/gw-akeyless-api-gateway 8081:8081 -n akeyless
+```
+Remember to set the port visibility to Public in the Ports tab.
+
+#### 5.4 Flask Application
+```bash
+kubectl port-forward svc/flask-todo 5000:80 -n flask-todo
+```
+
+### 6. Login to the Akeyless Gateway UI
+
+This will reset the connection between the Gateway and the Akeyless Console.
+
+### 7. Login to ArgoCD
+
+- Username: `admin`
+- Password: `kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode`
+
+### 8. [Optional] Login to the Akeyless Console
+
+Use the following OIDC Access ID when logging into Akeyless via OIDC (both UI and CLI).
+`p-j1ej0z1eudthim`
+
+
+## Troubleshooting
+### Delete Kubernetes Auth Method and Gateway Config from the CLI
+
+```bash
+akeyless gateway-delete-k8s-auth-config -n /Workshops/Workshop2/<your-github-username>/k8s-auth-method
+akeyless auth-method delete -n /Workshops/Workshop2/<your-github-username>/k8s-auth-method
+```
+
+You can then recreate them by running the script `Lab04/create-kubernetes-auth-method.sh`.
+
+
