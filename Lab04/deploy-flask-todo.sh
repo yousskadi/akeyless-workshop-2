@@ -67,7 +67,14 @@ sed -i 's|/Workshops/Workshop2/[^/]*/k8s-auth-method|/Workshops/Workshop2/'"$GIT
 sed -i 's|/Workshops/Workshop2/[^/]*/mysql_password_dynamic|/Workshops/Workshop2/'"$GITHUB_USERNAME"'/mysql_password_dynamic|g' k8s-manifests/flask-deployment.yaml
 
 # Replace GitHub username in env variable
-sed -i 's|name: GITHUB_USERNAME.*|name: GITHUB_USERNAME\n              value: '"$GITHUB_USERNAME"'|g' k8s-manifests/flask-deployment.yaml
+# Install yq if not present
+if ! command -v yq &> /dev/null; then
+    echo "Installing yq..."
+    sudo wget https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -O /usr/local/bin/yq && sudo chmod +x /usr/local/bin/yq
+fi
+
+# Update GitHub username in deployment manifest using yq
+yq e '.spec.template.spec.containers[0].env[] |= select(.name == "GITHUB_USERNAME").value = "'"$GITHUB_USERNAME"'"' -i k8s-manifests/flask-deployment.yaml
 
 # Push changes to the repository
 echo "Pushing changes to repository..."
