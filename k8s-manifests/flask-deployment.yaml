@@ -28,7 +28,7 @@ spec:
             - name: ENVIRONMENT
               value: remote
             - name: AKEYLESS_K8S_AUTH_ID
-              value: p-so32v2xj89ghkm
+              value: p-42hvjhn41dqwkm
             - name: AKEYLESS_GATEWAY_URL
               value: https://verbose-space-bassoon-q7qq69p6gpjwf4w97-8000.app.github.dev
             - name: AKEYLESS_GATEWAY_API_URL
