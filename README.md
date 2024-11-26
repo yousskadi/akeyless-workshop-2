@@ -166,3 +166,6 @@ akeyless auth-method delete -n /Workshops/Workshop2/<your-github-username>/k8s-a
 You can then recreate them by running the script `Lab04/create-kubernetes-auth-method.sh`.
 
 
+### 401 Auth Error
+
+If you see a 401 error in the flask application logs, most probably it's because port 8000 and/or 8081 are not set to visibility public. Go back and do that as mentioned in Lab03.
