@@ -22,7 +22,7 @@ Table of Contents:
 Run the following command to expose the Flask App:
 
 ```bash
-kubectl port-forward svc/flask-todo 5000:80
+kubectl port-forward svc/flask-todo 5000:80 -n flask-todo
 ```
 
 Now as usual, go to the ports section in your codespace and click on the globe icon on the Port `5000` line to open the Flask App in a new tab. You should see the following page:
