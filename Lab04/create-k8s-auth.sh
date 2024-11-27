@@ -97,12 +97,6 @@ else
     AUTH_RESPONSE=$(akeyless create-auth-method-k8s -n "$AUTH_METHOD_NAME" --json)
     ACCESS_ID=$(echo $AUTH_RESPONSE | jq -r .access_id)
     PRV_KEY=$(echo $AUTH_RESPONSE | jq -r .prv_key)
-    echo "Extracting K8s issuer..."
-    K8S_ISSUER=$(kubectl proxy --api-prefix=/k8s-api & \
-      sleep 2 && \
-      curl -s http://localhost:8001/k8s-api/.well-known/openid-configuration | \
-      jq -r .issuer && \
-      kill %1)
 
     # Get cluster endpoint
     K8S_HOST=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
@@ -116,7 +110,7 @@ else
       --k8s-host "$K8S_HOST" \
       --token-reviewer-jwt "$SA_JWT_TOKEN" \
       --k8s-ca-cert "$CA_CERT" \
-      --k8s-issuer "$K8S_ISSUER"
+      --k8s-issuer "https://kubernetes.default.svc.cluster.local"
 fi
 
 # Save access ID to a file

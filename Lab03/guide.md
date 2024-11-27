@@ -18,7 +18,7 @@ Table of Contents:
     - [1.3 Run a script to create an API Key and associate it with an Access Role](#13-run-a-script-to-create-an-api-key-and-associate-it-with-an-access-role)
   - [2. Create a Gateway in Akeyless](#2-create-a-gateway-in-akeyless)
     - [2.1 Create the Gateway](#21-create-the-gateway)
-    - [2.2 Expose the Gateway Port 8000](#22-expose-the-gateway-port-8000)
+    - [2.2 Expose the Gateway Port 8000 and 8081](#22-expose-the-gateway-port-8000-and-8081)
     - [2.3 Give Permission](#23-give-permission)
     - [2.4 Check the Gateway from the Akeyless Console](#24-check-the-gateway-from-the-akeyless-console)
 
@@ -127,7 +127,7 @@ gw-akeyless-api-gateway-6fdbbbfbb6-gl4n5   1/1     Running   0          9m37s
 
 Hit `Ctrl+C` to stop
 
-### 2.2 Expose the Gateway Port 8000
+### 2.2 Expose the Gateway Port 8000 and 8081
 
 First, open a new terminal in your codespace and run the following command:
 ```bash
@@ -136,6 +136,8 @@ kubectl port-forward svc/gw-akeyless-api-gateway 8000:8000 -n akeyless
 
 Then, in the codespace, click on the `PORTS` tab beside the `TERMINAL` tab and right click on port `8000` and change the `Port Visibility` to `Public`.
 ![alt text](../images/port_visibility_public.png)
+
+> Do the same for port 8081
 
 ### 2.3 Give Permission
 
