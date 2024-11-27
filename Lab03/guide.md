@@ -37,7 +37,38 @@ Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the
 akeyless auth --access-id=p-j1ej0z1eudthim --access-type=oidc --use-remote-browser
 ```
 
-Output:
+You will get a prompt saying:
+```
+AKEYLESS-CLI, first use detected
+For more info please visit: https://docs.akeyless.io/docs/cli
+Enter Akeyless URL (Default: vault.akeyless.io)
+```
+
+Just press `Enter` to use the default URL.
+
+Then you will get a prompt saying:
+```
+Would you like to configure a profile? (Y/n)
+```
+
+Click `n` to not configure a profile.
+
+Finally, you will get a prompt saying:
+
+```
+Would you like to move 'akeyless' binary to: /home/codespace/.akeyless/bin/akeyless? (Y/n)
+```
+
+Click `n` to not move the binary.
+
+Then you can re-run the command:
+
+```bash
+akeyless auth --access-id=p-j1ej0z1eudthim --access-type=oidc --use-remote-browser
+```
+
+You will get an output that says:
+
 ```
 Open the link below in your browser in order to complete the authentication:
 Link: https://auth.akeyless.io/oidc-login?access_id=p-j1ej0z1eudthim&redirect_uri=https://auth-relay.akeyless.io/creds-login&is_short_token=true
