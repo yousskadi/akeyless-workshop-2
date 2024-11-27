@@ -98,6 +98,8 @@ It does the following:
 12. Triggers final ArgoCD sync to deploy everything
 
 
+> Note: The deploy script may result in some errors. The most common error is that the MySQL pod takes a while to start and the Akeyless dynamic secret fails to be created. So it's important to check the errors and running the script again usually resolves the issue. 
+
 ## 4. Create a Dynamic Secret in Akeyless
 
 Navigate to the Akeyless UI and click on Items at the top left and navigate to your folder under `/Workshops/Workshop2/${GITHUB_USERNAME}`. You should see the dynamic secret `mysql_password_dynamic` created.
