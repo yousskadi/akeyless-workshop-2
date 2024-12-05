@@ -64,10 +64,11 @@ Click `n` to not move the binary.
 Then you can re-run the command:
 
 ```bash
+akeyless --init
 akeyless auth --access-id=p-j1ej0z1eudthim --access-type=oidc --use-remote-browser
 ```
 
-You will get an output that says:
+You may get an output that says:
 
 ```
 Open the link below in your browser in order to complete the authentication:
