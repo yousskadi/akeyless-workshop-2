@@ -12,7 +12,7 @@ Table of Contents:
   - [1. Fork GitHub Repo](#1-fork-github-repo)
   - [2. Start a Codespace](#2-start-a-codespace)
   - [3. Run minikube](#3-run-minikube)
-  - [4. Tun a keep alive for the codespace](#4-tun-a-keep-alive-for-the-codespace)
+  - [4. Run a keep alive for the codespace](#4-run-a-keep-alive-for-the-codespace)
 
 
 ## 1. Fork GitHub Repo
@@ -41,7 +41,7 @@ NAME       STATUS   ROLES           AGE   VERSION
 minikube   Ready    control-plane   12s   v1.31.0
 ```
 
-## 4. Tun a keep alive for the codespace
+## 4. Run a keep alive for the codespace
 
 In a new terminal, run the following command to keep the codespace alive.
 
