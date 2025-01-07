@@ -42,6 +42,8 @@ Run the following command to expose port 8081 which runs the akeyless api:
 kubectl port-forward svc/gw-akeyless-api-gateway 8081:8081
 ```
 
+Then, in the codespace, click on the `PORTS` tab beside the `TERMINAL` tab and right click on port `8081` and change the `Port Visibility` to `Public`.
+
 ## 3. Run the deploy script
 
 Run the following command from the root of the repository in a terminal window to deploy the application:

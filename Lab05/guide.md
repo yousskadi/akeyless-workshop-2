@@ -55,5 +55,3 @@ Interact with the Flask App by adding and deleting todo items to see how the dyn
 Try adding a todo item with the text "Akeyless secured my app" for a surprise! 🔐
 
 > Congratulations on finishing this workshop! You've successfully deployed a Flask App that uses akeyless MySQL database and dynamically rotates the credentials using Akeyless.
-
-> You've reached the end of the lab.
