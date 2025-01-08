@@ -34,10 +34,11 @@ Go to https://console.akeyless.io and click on `OIDC` and NOT `GitHub` under the
 ### 1.2 Login to Akeyless CLI via OIDC
 
 ```bash
+akeyless --init
 akeyless auth --access-id=p-j1ej0z1eudthim --access-type=oidc --use-remote-browser
 ```
 
-You will get a prompt saying:
+You may get a prompt saying:
 ```
 AKEYLESS-CLI, first use detected
 For more info please visit: https://docs.akeyless.io/docs/cli
@@ -51,7 +52,7 @@ Then you will get a prompt saying:
 Would you like to configure a profile? (Y/n)
 ```
 
-Click `n` to not configure a profile.
+Type `n` to not configure a profile.
 
 Finally, you will get a prompt saying:
 
@@ -59,12 +60,11 @@ Finally, you will get a prompt saying:
 Would you like to move 'akeyless' binary to: /home/codespace/.akeyless/bin/akeyless? (Y/n)
 ```
 
-Click `n` to not move the binary.
+Type `n` to not move the binary.
 
 Then you can re-run the command:
 
 ```bash
-akeyless --init
 akeyless auth --access-id=p-j1ej0z1eudthim --access-type=oidc --use-remote-browser
 ```
 
@@ -86,6 +86,9 @@ Click on the `Show Token` button and copy the token and save it somewhere to be 
 ![alt text](../images/copy-oidc-token.jpg)
 
 ### 1.3 Run a script to create an API Key and associate it with an Access Role
+
+Run the following command and when prompted, paste your OIDC token you copied in the previous step.
+
 ```bash
 Lab03/create_api_key.sh
 ```
@@ -147,7 +150,7 @@ Approve the access to this port.
 
 ![alt text](../images/approve_port_access.png)
 
-Login using your API key credentials found in the `creds_api_key_auth.json` file in Lab03.
+Login using your API key credentials found in the `creds_api_key_auth.json` file in the root of the repository.
 
 ![alt text](../images/gwy-sign-in.png)
 
