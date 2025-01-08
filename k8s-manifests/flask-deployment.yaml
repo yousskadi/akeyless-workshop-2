@@ -28,7 +28,7 @@ spec:
             - name: ENVIRONMENT
               value: remote
             - name: AKEYLESS_K8S_AUTH_ID
-              value: p-dlqhvmsxoouskm
+              value: p-tq5sw1ntenpykm
             - name: AKEYLESS_GATEWAY_URL
               value: https://opulent-zebra-97jg6jp9wvxh75v5-8000.app.github.dev
             - name: AKEYLESS_GATEWAY_API_URL
