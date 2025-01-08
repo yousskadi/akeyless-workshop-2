@@ -51,6 +51,8 @@ argocd-repo-server-75c657669b-f578n                 1/1     Running   0         
 argocd-server-7bbfdb874-fgjff                       1/1     Running   0             38s
 ```
 
+Click ctrl+c to stop the watch command.
+
 ## 2. Get the initial admin password
 
 To access ArgoCD, you will need the initial admin password. You can get it using the command below:
@@ -81,12 +83,21 @@ Go to the `Ports` and click on the globe icon which will open a new browser wind
 
 ![alt text](../images/open-browser.png)
 
-Use the username `admin` with this password to log in to ArgoCD.
+Use the username `admin` with the password you got from step 2 to log in to ArgoCD.
 
 ## 5. Login to the CLI
 
+In a terminal window, run the following command to login to ArgoCD using the CLI:
+
 ```bash
 argocd login 127.0.0.1:3000 --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 --decode) --grpc-web --insecure
+```
+
+Expected output:
+
+```
+'admin:login' logged in successfully
+Context '127.0.0.1:3000' updated
 ```
 
 > You've reached the end of the lab.
