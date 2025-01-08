@@ -36,7 +36,7 @@ This script does the following:
 
 ## 2. Expose port 8081
 
-Run the following command to expose port 8081 which runs the akeyless api:
+Run the following command in a new terminal window to expose port 8081 which runs the akeyless api:
 
 ```bash
 kubectl port-forward svc/gw-akeyless-api-gateway 8081:8081
@@ -104,7 +104,7 @@ It does the following:
 
 ## 4. Create a Dynamic Secret in Akeyless
 
-Navigate to the Akeyless UI and click on Items at the top left and navigate to your folder under `/Workshops/Workshop2/${GITHUB_USERNAME}`. You should see the dynamic secret `mysql_password_dynamic` created.
+Navigate to the Akeyless UI and click on `Items` at the top left and navigate to your folder under `/Workshops/Workshop2/${GITHUB_USERNAME}`. You should see the dynamic secret `mysql_password_dynamic` created.
 
 ![Akeyless UI](../images/get-dynamic-secret.png)
 

@@ -19,7 +19,7 @@ Table of Contents:
 
 ## 1. Expose the Flask App
 
-Run the following command to expose the Flask App:
+In a new terminal window, run the following command to expose the Flask App:
 
 ```bash
 kubectl port-forward svc/flask-todo 5000:80 -n flask-todo
